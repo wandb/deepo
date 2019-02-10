@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from .__module__ import Module, source
 
-
 @source('apt')
 class Tools(Module):
 

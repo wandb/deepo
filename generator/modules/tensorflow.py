@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from .__module__ import Module, dependency, source
 from .python import Python
+from .wandb import Wandb
 
 
-@dependency(Python)
+@dependency(Python, Wandb)
 @source('pip')
 class Tensorflow(Module):
 

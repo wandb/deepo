@@ -4,23 +4,11 @@
 
 candidate_modules = [
     'tensorflow',
-    'sonnet',
-    'mxnet',
-    'cntk',
     'keras',
     'pytorch',
-    'chainer',
-    'theano',
-    'lasagne',
-    'caffe',
-    'torch',
-    'darknet',
 ]
 
-non_python_modules = [
-    'torch',
-    'darknet',
-]
+non_python_modules = []
 
 pyvers = [
     # '2.7',
@@ -62,7 +50,7 @@ def generate(f, cuda_ver=None, cudnn_ver=None):
 
         # all modules with jupyter
         for pyver in pyvers:
-            modules = candidate_modules + ['python==%s' % pyver, 'onnx', 'jupyter']
+            modules = candidate_modules + ['python==%s' % pyver, 'onnx', 'jupyterlab']
             postfix = 'all-jupyter-py%s' % pyver.replace('.', '')
             f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
 
