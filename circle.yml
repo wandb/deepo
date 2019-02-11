@@ -1,16 +1,6 @@
 version: 2.0
 jobs:
     
-    "all-jupyter-py36-cu90_all-jupyter-py36_all-jupyter":
-        machine: true
-        steps:
-            - checkout
-            - run: docker build -t $DOCKER_REPO:all-jupyter-py36-cu90 -t $DOCKER_REPO:all-jupyter-py36 -t $DOCKER_REPO:all-jupyter -f docker/Dockerfile.all-jupyter-py36-cu90 .
-            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
-            - run: docker push $DOCKER_REPO:all-jupyter-py36-cu90            
-            - run: docker push $DOCKER_REPO:all-jupyter-py36            
-            - run: docker push $DOCKER_REPO:all-jupyter
-    
     "tensorflow-py36-cpu_tensorflow-cpu":
         machine: true
         steps:
@@ -41,6 +31,50 @@ jobs:
             - run: docker push $DOCKER_REPO:py36-cpu            
             - run: docker push $DOCKER_REPO:cpu
     
+    "all-py36-cu80_py36-cu80":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:all-py36-cu80 -t $DOCKER_REPO:py36-cu80 -f docker/Dockerfile.all-py36-cu80 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:all-py36-cu80            
+            - run: docker push $DOCKER_REPO:py36-cu80
+    
+    "tensorflow-py36-cu80":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:tensorflow-py36-cu80 -f docker/Dockerfile.tensorflow-py36-cu80 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:tensorflow-py36-cu80
+    
+    "jupyter-py36-cu90_jupyter-py36_jupyter":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:jupyter-py36-cu90 -t $DOCKER_REPO:jupyter-py36 -t $DOCKER_REPO:jupyter -f docker/Dockerfile.jupyter-py36-cu90 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:jupyter-py36-cu90            
+            - run: docker push $DOCKER_REPO:jupyter-py36            
+            - run: docker push $DOCKER_REPO:jupyter
+    
+    "pytorch-py36-cu80":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:pytorch-py36-cu80 -f docker/Dockerfile.pytorch-py36-cu80 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:pytorch-py36-cu80
+    
+    "jupyter-py36-cpu_jupyter-cpu":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:jupyter-py36-cpu -t $DOCKER_REPO:jupyter-cpu -f docker/Dockerfile.jupyter-py36-cpu .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:jupyter-py36-cpu            
+            - run: docker push $DOCKER_REPO:jupyter-cpu
+    
     "keras-py36-cpu_keras-cpu":
         machine: true
         steps:
@@ -49,15 +83,6 @@ jobs:
             - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
             - run: docker push $DOCKER_REPO:keras-py36-cpu            
             - run: docker push $DOCKER_REPO:keras-cpu
-    
-    "all-jupyter-py36-cpu_all-jupyter-cpu":
-        machine: true
-        steps:
-            - checkout
-            - run: docker build -t $DOCKER_REPO:all-jupyter-py36-cpu -t $DOCKER_REPO:all-jupyter-cpu -f docker/Dockerfile.all-jupyter-py36-cpu .
-            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
-            - run: docker push $DOCKER_REPO:all-jupyter-py36-cpu            
-            - run: docker push $DOCKER_REPO:all-jupyter-cpu
     
     "pytorch-py36-cu90_pytorch-py36_pytorch":
         machine: true
@@ -68,6 +93,14 @@ jobs:
             - run: docker push $DOCKER_REPO:pytorch-py36-cu90            
             - run: docker push $DOCKER_REPO:pytorch-py36            
             - run: docker push $DOCKER_REPO:pytorch
+    
+    "jupyter-py36-cu80":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:jupyter-py36-cu80 -f docker/Dockerfile.jupyter-py36-cu80 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:jupyter-py36-cu80
     
     "all-py36-cu90_all-py36_all_py36-cu90_latest":
         machine: true
@@ -91,6 +124,14 @@ jobs:
             - run: docker push $DOCKER_REPO:tensorflow-py36            
             - run: docker push $DOCKER_REPO:tensorflow
     
+    "keras-py36-cu80":
+        machine: true
+        steps:
+            - checkout
+            - run: docker build -t $DOCKER_REPO:keras-py36-cu80 -f docker/Dockerfile.keras-py36-cu80 .
+            - run: docker login -u $DOCKER_USER -p $DOCKER_PASS            
+            - run: docker push $DOCKER_REPO:keras-py36-cu80
+    
     "pytorch-py36-cpu_pytorch-cpu":
         machine: true
         steps:
@@ -104,13 +145,18 @@ workflows:
     version: 2
     build:
         jobs:
-            - "all-jupyter-py36-cu90_all-jupyter-py36_all-jupyter"
             - "tensorflow-py36-cpu_tensorflow-cpu"
             - "keras-py36-cu90_keras-py36_keras"
             - "all-py36-cpu_all-cpu_py36-cpu_cpu"
+            - "all-py36-cu80_py36-cu80"
+            - "tensorflow-py36-cu80"
+            - "jupyter-py36-cu90_jupyter-py36_jupyter"
+            - "pytorch-py36-cu80"
+            - "jupyter-py36-cpu_jupyter-cpu"
             - "keras-py36-cpu_keras-cpu"
-            - "all-jupyter-py36-cpu_all-jupyter-cpu"
             - "pytorch-py36-cu90_pytorch-py36_pytorch"
+            - "jupyter-py36-cu80"
             - "all-py36-cu90_all-py36_all_py36-cu90_latest"
             - "tensorflow-py36-cu90_tensorflow-py36_tensorflow"
+            - "keras-py36-cu80"
             - "pytorch-py36-cpu_pytorch-cpu"

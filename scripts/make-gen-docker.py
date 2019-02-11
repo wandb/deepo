@@ -51,12 +51,12 @@ def generate(f, cuda_ver=None, cudnn_ver=None):
         # all modules with jupyter
         for pyver in pyvers:
             modules = candidate_modules + ['python==%s' % pyver, 'onnx', 'jupyterlab']
-            postfix = 'all-jupyter-py%s' % pyver.replace('.', '')
+            postfix = 'jupyter-py%s' % pyver.replace('.', '')
             f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
 
 
 if __name__ == '__main__':
     with open('gen-docker.sh', 'w') as f:
         generate(f)
-        # generate(f, '8.0', '6')
+        generate(f, '8.0', '6')
         generate(f, '9.0', '7')
