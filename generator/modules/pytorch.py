@@ -9,8 +9,6 @@ from .wandb import Wandb
 class Pytorch(Module):
 
     def build(self):
-        cuver = 'cpu' if self.composer.cuda_ver is None else 'cu%d' % (
-            float(self.composer.cuda_ver) * 10)
         return r'''
             $PIP_INSTALL \
                 future \
@@ -19,10 +17,7 @@ class Pytorch(Module):
                 enum34 \
                 pyyaml \
                 typing \
-            	torchvision_nightly \
+            	torchvision \
+                torch \
                 && \
-            $PIP_INSTALL \
-                torch_nightly -f \
-                https://download.pytorch.org/whl/nightly/%s/torch_nightly.html \
-                && \
-        ''' % cuver
+        '''

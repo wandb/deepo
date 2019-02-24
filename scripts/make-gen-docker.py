@@ -3,7 +3,6 @@
 """Generate scripts for generating dockerfiles."""
 
 candidate_modules = [
-    'tensorflow',
     'keras',
     'pytorch',
 ]
@@ -24,35 +23,30 @@ def get_command(modules, postfix, cuda_ver, cudnn_ver):
         postfix,
         ' '.join(m for m in modules),
         '' if cuda_ver is None else ' --cuda-ver %s' % cuda_ver,
-        '' if cudnn_ver is None else ' --cudnn-ver %s' % cudnn_ver,
+        '' if cudnn_ver is None else ' --cudnn-ver %s' % cudnn_ver
     )
 
 
 def generate(f, cuda_ver=None, cudnn_ver=None):
 
-        # single module
-        for module in candidate_modules:
-            if module in non_python_modules:
-                modules = [module]
-                f.write(get_command(modules, module, cuda_ver, cudnn_ver))
-            else:
-                for pyver in pyvers:
-                    modules = [module, 'python==%s' % pyver]
-                    postfix = '%s-py%s' % (
-                        module, pyver.replace('.', ''))
-                    f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
+    # single module
+    for module in candidate_modules:
+        if module in non_python_modules:
+            modules = [module]
+            f.write(get_command(modules, module, cuda_ver, cudnn_ver))
+        else:
+            for pyver in pyvers:
+                modules = [module, 'python==%s' % pyver]
+                postfix = '%s-py%s' % (
+                    module, pyver.replace('.', ''))
+                f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
 
-        # all modules
-        for pyver in pyvers:
-            modules = candidate_modules + ['python==%s' % pyver, 'onnx']
-            postfix = 'all-py%s' % pyver.replace('.', '')
-            f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
-
-        # all modules with jupyter
-        for pyver in pyvers:
-            modules = candidate_modules + ['python==%s' % pyver, 'onnx', 'jupyterlab']
-            postfix = 'jupyter-py%s' % pyver.replace('.', '')
-            f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
+    # all modules
+    for pyver in pyvers:
+        modules = candidate_modules + ['python==%s' %
+                                       pyver, 'onnx', 'opencv', 'jupyterlab']
+        postfix = 'all-py%s' % pyver.replace('.', '')
+        f.write(get_command(modules, postfix, cuda_ver, cudnn_ver))
 
 
 if __name__ == '__main__':
