@@ -4,6 +4,7 @@
 [![docker](https://img.shields.io/docker/pulls/ufoym/deepo.svg)](https://hub.docker.com/r/ufoym/deepo)
 ![license](https://img.shields.io/github/license/ufoym/deepo.svg)
 
+This fork has simplified the build for W&B
 
 ***Deepo*** is a series of [*Docker*](http://www.docker.com/) images that
 - allows you to quickly set up your deep learning research environment
