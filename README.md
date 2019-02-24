@@ -27,7 +27,6 @@ and their Dockerfile generator that
     - [Usage](#Usage-cpu)
 - [Customization](#Customization)
   - [Unhappy with all-in-one solution?](#One)
-  - [Other python versions](#Python)
   - [Jupyter support](#Jupyter)
   - [Build your own customized image](#Build)
 - [Comparison to Alternatives](#Comparison)
@@ -66,24 +65,24 @@ docker pull ufoym/deepo
 
 Now you can try this command:
 ```bash
-nvidia-docker run --rm ufoym/deepo nvidia-smi
+docker run --runtime=nvidia --rm ufoym/deepo nvidia-smi
 ```
 This should work and enables Deepo to use the GPU from inside a docker container.
 If this does not work, search [the issues section on the nvidia-docker GitHub](https://github.com/NVIDIA/nvidia-docker/issues) -- many solutions are already documented. To get an interactive shell to a container that will not be automatically deleted after you exit do
 
 ```bash
-nvidia-docker run -it ufoym/deepo bash
+docker run --runtime=nvidia -it ufoym/deepo bash
 ```
 
 If you want to share your data and configurations between the host (your machine or VM) and the container in which you are using Deepo, use the -v option, e.g.
 ```bash
-nvidia-docker run -it -v /host/data:/data -v /host/config:/config ufoym/deepo bash
+docker run --runtime=nvidia -it -v /host/data:/data -v /host/config:/config ufoym/deepo bash
 ```
 This will make `/host/data` from the host visible as `/data` in the container, and `/host/config` as `/config`. Such isolation reduces the chances of your containerized experiments overwriting or using wrong data.
 
-Please note that some frameworks (e.g. PyTorch) use shared memory to share data between processes, so if multiprocessing is used the default shared memory segment size that container runs with is not enough, and you should increase shared memory size either with `--ipc=host` or `--shm-size` command line options to `nvidia-docker run`.
+Please note that some frameworks (e.g. PyTorch) use shared memory to share data between processes, so if multiprocessing is used the default shared memory segment size that container runs with is not enough, and you should increase shared memory size either with `--ipc=host` or `--shm-size` command line options to `docker run`.
 ```bash
-nvidia-docker run -it --ipc=host ufoym/deepo bash
+docker run --runtime=nvidia -it --ipc=host ufoym/deepo bash
 ```
 
 
@@ -180,23 +179,6 @@ Take tensorflow for example:
 docker pull ufoym/deepo:tensorflow
 ```
 
-<a name="Python"/>
-
-## Other python versions
-
-Note that all python-related images use `Python 3.6` by default. If you are unhappy with `Python 3.6`, you can also specify other python versions:
-```bash
-docker pull ufoym/deepo:py27
-```
-
-```bash
-docker pull ufoym/deepo:tensorflow-py27
-```
-
-Currently, we support `Python 2.7` and `Python 3.6`.
-
-See [Available Tags](#Available-tags) for a complete list of all available tags. These pre-built images are all built from `docker/Dockerfile.*` and `circle.yml`. See [How to generate `docker/Dockerfile.*` and `circle.yml`](https://github.com/ufoym/deepo/tree/master/scripts) if you are interested in how these files are generated.
-
 <a name="Jupyter"/>
 
 ## Jupyter support
@@ -204,14 +186,12 @@ See [Available Tags](#Available-tags) for a complete list of all available tags.
 #### Step 1. pull the image with jupyter support
 
 ```bash
-docker pull ufoym/deepo:all-py36-jupyter
+docker pull ufoym/deepo:all-jupyter
 ```
-
-Note that the tag could be either of `all-py36-jupyter`, `py36-jupyter`, `all-py27-jupyter`, or `py27-jupyter`.
 
 #### Step 2. run the image
 ```bash
-nvidia-docker run -it -p 8888:8888 --ipc=host ufoym/deepo:all-py36-jupyter jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token= --notebook-dir='/root'
+docker run --runtime=nvidia -it -p 8888:8888 --ipc=host ufoym/deepo:all-jupyter jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token= --notebook-dir='/root'
 ```
 
 
