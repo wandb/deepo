@@ -68,7 +68,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 # ------------------------------------------------------------------
 
     $PIP_INSTALL \
-        git+git://github.com/wandb/client.git@feature/pip_freeze_docker#egg=wandb \
+        wandb \
         && \
 
 # ==================================================================
